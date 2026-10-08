@@ -30,8 +30,8 @@ const u=StyleSheet.create({
  header:{height:50,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},headerTitle:{color:C.text,fontSize:16,fontWeight:"900"},
  btn:{height:50,borderRadius:15,backgroundColor:C.gold,alignItems:"center",justifyContent:"center"},outline:{backgroundColor:"transparent",borderWidth:1,borderColor:C.text},btnText:{color:"#071018",fontSize:11,fontWeight:"900"},
  chip:{paddingHorizontal:14,paddingVertical:8,borderRadius:15,borderWidth:1,borderColor:C.line,backgroundColor:C.card,marginRight:6},chipOn:{backgroundColor:C.gold,borderColor:C.gold},chipText:{color:C.text,fontSize:9,fontWeight:"800"},runImg:{width:74,height:74,borderRadius:12},
- bottom:{position:"absolute",left:15,right:15,bottom:10,height:78,borderRadius:24,borderWidth:1,borderColor:"#344955",backgroundColor:"#040B11F5",flexDirection:"row",alignItems:"center",justifyContent:"space-around",paddingHorizontal:3,shadowColor:"#000",shadowOpacity:.45,shadowRadius:15,elevation:14},
+ bottom:{position:"absolute",left:15,right:15,bottom:10,height:78,borderRadius:25,borderWidth:1,borderColor:"#3A5262",backgroundColor:"#030A10F7",flexDirection:"row",alignItems:"center",justifyContent:"space-around",paddingHorizontal:3,shadowColor:"#000",shadowOpacity:.5,shadowRadius:18,elevation:18},
  nav:{width:59,height:56,alignItems:"center",justifyContent:"center"},navText:{color:"#96A3AC",fontSize:8,fontWeight:"800",marginTop:4},
- createNav:{width:62,height:68,alignItems:"center",justifyContent:"flex-start"},createCircle:{width:50,height:50,borderRadius:25,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:-17,borderWidth:3,borderColor:"#061018",shadowColor:C.gold,shadowOpacity:.35,shadowRadius:12,elevation:10},
+ createNav:{width:64,height:68,alignItems:"center",justifyContent:"flex-start"},createCircle:{width:54,height:54,borderRadius:27,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:-23,borderWidth:3,borderColor:"#071018",shadowColor:C.gold,shadowOpacity:.45,shadowRadius:15,elevation:12},
  avatar:{backgroundColor:C.card,borderWidth:2,borderColor:C.gold}
 });
