@@ -45,7 +45,7 @@ export default function Home(){
         <Text style={s.emptyTitle}>Nenhuma corrida encontrada</Text>
         <Text style={s.emptyText}>Que tal criar sua primeira corrida{"\n"}ou explorar a região?</Text>
         <Pressable style={s.emptyCta} onPress={()=>router.push("/(tabs)/explore")}><Text style={s.emptyCtaText}>Explorar agora</Text><Ionicons name="arrow-forward" size={17} color={C.gold}/></Pressable>
-      </View>
+      </View>}
     </ScrollView>
     <Bottom active="home"/>
   </View>
