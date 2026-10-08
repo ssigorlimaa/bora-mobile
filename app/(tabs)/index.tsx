@@ -7,14 +7,14 @@ import { Bottom } from "../../components/BoraUI";
 import { supabase } from "../../lib/supabase";
 
 export default function Home(){
-  const [runs,setRuns]=useState<any[]>([]);
-  useEffect(()=>{(async()=>{if(!supabase)return;const {data}=await supabase.from("runs").select("*").eq("visibility","public").eq("status","scheduled").gte("starts_at",new Date().toISOString()).order("starts_at",{ascending:true}).limit(3);setRuns(data||[])})()},[]);
+  const [runs,setRuns]=useState<any[]>([]); const [profile,setProfile]=useState<any>(null);
+  useEffect(()=>{(async()=>{if(!supabase)return;const {data:u}=await supabase.auth.getUser(); if(u.user){const {data:p}=await supabase.from("profiles").select("display_name,avatar_url").eq("id",u.user.id).maybeSingle(); setProfile(p)} const {data}=await supabase.from("runs").select("*").eq("visibility","public").eq("status","scheduled").gte("starts_at",new Date().toISOString()).order("starts_at",{ascending:true}).limit(3);setRuns(data||[])})()},[]);
   return <View style={s.root}>
     <ScrollView style={s.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={s.content}>
       <View style={s.header}>
         <View style={s.identity}>
-          <View style={s.avatar}><Ionicons name="person" size={23} color={C.muted}/></View>
-          <View><Text style={s.hello}>Fala, <Text style={s.gold}>Igor!</Text> 👋</Text><Text style={s.sub}>Bora correr hoje?</Text></View>
+          <View style={s.avatar}>{profile?.avatar_url?<Image source={{uri:profile.avatar_url}} style={s.avatarImage}/>:<Ionicons name="person" size={23} color={C.muted}/>}</View>
+          <View><Text style={s.hello}>Fala, <Text style={s.gold}>{profile?.display_name?.split(" ")[0]||"corredor"}!</Text> 👋</Text><Text style={s.sub}>Bora correr hoje?</Text></View>
         </View>
         <View style={s.actions}>
           <Pressable style={s.iconBtn}><Ionicons name="notifications-outline" size={21} color={C.text}/><View style={s.dot}/></Pressable>
@@ -60,7 +60,7 @@ function Quick({icon,title,sub,tone,onPress}:{icon:any;title:string;sub:string;t
 }
 const s=StyleSheet.create({
  root:{flex:1,backgroundColor:C.bg},scroll:{flex:1},content:{paddingHorizontal:15,paddingTop:18,paddingBottom:150},
- header:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:16},identity:{flexDirection:"row",alignItems:"center"},avatar:{width:54,height:54,borderRadius:27,borderWidth:2,borderColor:C.gold,backgroundColor:C.card,alignItems:"center",justifyContent:"center",marginRight:11},hello:{color:C.text,fontSize:20,fontWeight:"900",letterSpacing:-.5},gold:{color:C.gold},sub:{color:C.muted,fontSize:10,marginTop:2},actions:{flexDirection:"row",gap:8},iconBtn:{width:43,height:43,borderRadius:14,borderWidth:1,borderColor:"#284254",backgroundColor:C.surface,alignItems:"center",justifyContent:"center"},dot:{position:"absolute",right:8,top:7,width:7,height:7,borderRadius:4,backgroundColor:C.gold},
+ header:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:16},identity:{flexDirection:"row",alignItems:"center"},avatar:{width:54,height:54,borderRadius:27,borderWidth:2,borderColor:C.gold,backgroundColor:C.card,alignItems:"center",justifyContent:"center",marginRight:11,overflow:"hidden"},avatarImage:{width:"100%",height:"100%"},hello:{color:C.text,fontSize:20,fontWeight:"900",letterSpacing:-.5},gold:{color:C.gold},sub:{color:C.muted,fontSize:10,marginTop:2},actions:{flexDirection:"row",gap:8},iconBtn:{width:43,height:43,borderRadius:14,borderWidth:1,borderColor:"#284254",backgroundColor:C.surface,alignItems:"center",justifyContent:"center"},dot:{position:"absolute",right:8,top:7,width:7,height:7,borderRadius:4,backgroundColor:C.gold},
  search:{height:54,borderRadius:27,borderWidth:1,borderColor:"#29485D",backgroundColor:C.surface,paddingHorizontal:16,flexDirection:"row",alignItems:"center",gap:11,marginBottom:16},searchText:{flex:1,color:"#AAB7C1",fontSize:11,fontWeight:"600"},
  hero:{height:225,borderRadius:25,overflow:"hidden",borderWidth:1,borderColor:"#29495C",position:"relative",justifyContent:"flex-end"},heroShade:{...StyleSheet.absoluteFillObject,backgroundColor:"#00000066"},heroCopy:{padding:18,paddingBottom:20},eyebrow:{color:C.white,fontSize:10,fontWeight:"800",letterSpacing:.7},heroTitle:{color:C.white,fontSize:36,fontStyle:"italic",fontWeight:"900",letterSpacing:-1.4,marginTop:3},heroText:{color:C.white,fontSize:11,lineHeight:16,width:"72%",marginTop:2},heroArrow:{position:"absolute",right:17,bottom:19,width:51,height:51,borderRadius:26,backgroundColor:C.gold,alignItems:"center",justifyContent:"center"},
  quickGrid:{flexDirection:"row",flexWrap:"wrap",gap:9,marginTop:12},quick:{width:"48.5%",height:112,borderRadius:19,borderWidth:1,padding:12},quickTop:{flexDirection:"row",justifyContent:"space-between",alignItems:"center"},quickIcon:{width:35,height:35,borderRadius:18,alignItems:"center",justifyContent:"center"},quickTitle:{color:C.text,fontSize:10,fontWeight:"900",marginTop:12},quickSub:{color:"#AAB7C1",fontSize:8.5,marginTop:4,lineHeight:12},
