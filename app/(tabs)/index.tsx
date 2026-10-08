@@ -15,7 +15,7 @@ export default function Home(){
  const {width}=useWindowDimensions();
  const compact=width<390;
  return <View style={s.root}>
-  <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.wrap,compact&&s.wrapCompact]}>
+  <ScrollView style={s.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={[s.wrap,compact&&s.wrapCompact]}>
    <View style={s.header}>
     <View style={s.identity}><Avatar size={compact?45:48} imageIndex={0}/><View style={{marginLeft:10}}><Text style={s.hello}>Fala, <Text style={s.gold}>Igor!</Text> <Text style={s.wave}>👋</Text></Text><Text style={s.sub}>Bora correr hoje?</Text></View></View>
     <View style={s.headerActions}><Pressable style={s.iconBtn}><Ionicons name="notifications-outline" size={20} color={C.text}/><View style={s.dot}/></Pressable><Pressable style={s.iconBtn}><Ionicons name="person-add-outline" size={18} color={C.text}/></Pressable></View>
@@ -54,7 +54,7 @@ export default function Home(){
 }
 
 const s=StyleSheet.create({
- root:{flex:1,backgroundColor:C.bg},wrap:{paddingHorizontal:15,paddingTop:14,paddingBottom:100},wrapCompact:{paddingHorizontal:14},
+ root:{flex:1,backgroundColor:C.bg},scroll:{flex:1},wrap:{paddingHorizontal:15,paddingTop:14,paddingBottom:16},wrapCompact:{paddingHorizontal:14},
  header:{height:53,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},identity:{flexDirection:"row",alignItems:"center"},hello:{color:C.text,fontSize:20,fontWeight:"900",letterSpacing:-.5},gold:{color:C.gold},wave:{fontSize:18},sub:{color:C.muted,fontSize:10,marginTop:2,fontWeight:"500"},headerActions:{flexDirection:"row",gap:8},iconBtn:{width:41,height:41,borderRadius:13,borderWidth:1,borderColor:"#1C3443",backgroundColor:"#07131C",alignItems:"center",justifyContent:"center",position:"relative"},dot:{position:"absolute",right:7,top:6,width:6,height:6,borderRadius:3,backgroundColor:C.gold},
  search:{height:50,borderRadius:25,borderWidth:1,borderColor:"#294150",backgroundColor:"#07131C",marginTop:10,marginBottom:13,paddingHorizontal:15,flexDirection:"row",alignItems:"center",gap:10},searchText:{flex:1,color:"#99A7B1",fontSize:10,fontWeight:"600"},
  hero:{height:220,borderRadius:24,overflow:"hidden",position:"relative",justifyContent:"flex-end",borderWidth:1,borderColor:"#33434C"},heroCompact:{height:205},heroShade:{...StyleSheet.absoluteFillObject,backgroundColor:"#00000066"},heroContent:{padding:15,paddingBottom:18},heroEyebrow:{color:C.white,fontSize:8,fontWeight:"900",letterSpacing:.7,marginBottom:4},heroTitle:{color:C.white,fontSize:31,fontStyle:"italic",fontWeight:"900",letterSpacing:-1.2},heroText:{color:C.white,fontSize:10.5,lineHeight:15,width:"72%",marginTop:2},heroGo:{position:"absolute",right:14,bottom:14,width:47,height:47,borderRadius:24,backgroundColor:C.gold,alignItems:"center",justifyContent:"center"},
