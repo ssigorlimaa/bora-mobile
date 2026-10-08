@@ -21,19 +21,19 @@ export const RunImage=({uri="https://images.unsplash.com/photo-1552674605-db6ffd
 export const Bottom=({active="home"}:{active?:string})=>{
  const insets=useSafeAreaInsets();
  const items=[["home","Início","home"],["explore","Explorar","search"],["create","Criar","add"],["challenge","Desafios","trophy"],["profile","Perfil","person"]];
- return <View style={[u.bottom,{bottom:Math.max(8,insets.bottom),}]}>{items.map(x=>x[0]==="create"
+ return <View style={[u.bottom,{bottom:Math.max(10,insets.bottom+6)}]}>{items.map(x=>x[0]==="create"
  ? <Pressable key={x[0]} style={u.createNav} onPress={()=>router.push("/(tabs)/run")}><View style={u.createCircle}><Ionicons name="add" size={29} color="#071018"/></View><Text style={u.navText}>Criar</Text></Pressable>
  : <Pressable key={x[0]} style={u.nav} onPress={()=>router.push((x[0]==="home"?"/":x[0]==="explore"?"/(tabs)/explore":x[0]==="challenge"?"/(tabs)/challenges":"/(tabs)/profile") as any)}><Ionicons name={x[2] as any} size={21} color={active===x[0]?C.gold:"#9BA8B1"}/><Text style={[u.navText,active===x[0]&&{color:C.gold}]}>{x[1]}</Text></Pressable>)}</View>;
 };
 
-export const Avatar=({size=34,imageIndex=0}:{size?:number;imageIndex?:number})=><Image source={{uri:avatars[imageIndex%avatars.length]}} style={[u.avatar,{width:size,height:size,borderRadius:size/2}]}/>;
+export const Avatar=({size=34,imageIndex=0,imageUri}:{size?:number;imageIndex?:number;imageUri?:string|null})=><Image source={{uri:imageUri||avatars[imageIndex%avatars.length]}} style={[u.avatar,{width:size,height:size,borderRadius:size/2}]}/>;
 
 const u=StyleSheet.create({
  header:{height:50,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},headerTitle:{color:C.text,fontSize:16,fontWeight:"900"},
  btn:{height:50,borderRadius:15,backgroundColor:C.gold,alignItems:"center",justifyContent:"center"},outline:{backgroundColor:"transparent",borderWidth:1,borderColor:C.text},btnText:{color:"#071018",fontSize:11,fontWeight:"900"},
  chip:{paddingHorizontal:14,paddingVertical:8,borderRadius:15,borderWidth:1,borderColor:C.line,backgroundColor:C.card,marginRight:6},chipOn:{backgroundColor:C.gold,borderColor:C.gold},chipText:{color:C.text,fontSize:9,fontWeight:"800"},runImg:{width:74,height:74,borderRadius:12},
- bottom:{position:"absolute",left:15,right:15,height:78,borderRadius:25,borderWidth:1,borderColor:"#3A5262",backgroundColor:"#030A10F7",flexDirection:"row",alignItems:"center",justifyContent:"space-around",paddingHorizontal:3,shadowColor:"#000",shadowOpacity:.5,shadowRadius:18,elevation:18},
- nav:{width:59,height:56,alignItems:"center",justifyContent:"center"},navText:{color:"#96A3AC",fontSize:8,fontWeight:"800",marginTop:4},
- createNav:{width:64,height:68,alignItems:"center",justifyContent:"flex-start"},createCircle:{width:54,height:54,borderRadius:27,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:-23,borderWidth:3,borderColor:"#071018",shadowColor:C.gold,shadowOpacity:.45,shadowRadius:15,elevation:12},
+ bottom:{position:"absolute",left:15,right:15,height:80,borderRadius:25,borderWidth:1,borderColor:"#3A5262",backgroundColor:"#030A10F8",flexDirection:"row",alignItems:"center",justifyContent:"space-around",paddingHorizontal:3,shadowColor:"#000",shadowOpacity:.5,shadowRadius:18,elevation:18},
+ nav:{width:59,height:58,alignItems:"center",justifyContent:"center"},navText:{color:"#96A3AC",fontSize:8,fontWeight:"800",marginTop:4},
+ createNav:{width:64,height:70,alignItems:"center",justifyContent:"flex-start"},createCircle:{width:56,height:56,borderRadius:28,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:-24,borderWidth:3,borderColor:"#071018",shadowColor:C.gold,shadowOpacity:.45,shadowRadius:15,elevation:12},
  avatar:{backgroundColor:C.card,borderWidth:2,borderColor:C.gold}
 });
