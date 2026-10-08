@@ -17,4 +17,13 @@ module.exports = ({ config }) => ({
       },
     },
   },
+  ios: {
+    ...base.expo.ios,
+    ...config.ios,
+    config: {
+      ...base.expo.ios?.config,
+      ...config.ios?.config,
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY || undefined,
+    },
+  },
 });
