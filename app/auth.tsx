@@ -15,7 +15,7 @@ export default function Auth(){
   setBusy(true);const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:"bora://reset-password"});setBusy(false);
   if(error)return Alert.alert("Recuperação",messageFor(error));Alert.alert("E-mail enviado","Confira sua caixa de entrada para redefinir a senha.");
  }
- async function finishInvite(userId:string){if(!supabase||!params.invite||!userId)return;const{data}=await supabase.from("runs").select("id").eq("share_token",params.invite).maybeSingle();if(data?.id)router.replace(("/run/"+data.id) as any)}
+ async function finishInvite(userId:string){if(!supabase||!params.invite||!userId)return null;const{data}=await supabase.from("runs").select("id").eq("share_token",params.invite).maybeSingle();return data?.id||null}
  async function submit(){
   if(!supabase)return Alert.alert("Configuração","O BORA não conseguiu conectar ao servidor.");
   if(!email.trim()||password.length<6||(signup&&!name.trim()))return Alert.alert("Confira","Preencha os campos. A senha precisa ter pelo menos 6 caracteres.");
@@ -23,11 +23,11 @@ export default function Auth(){
   if(signup){
    const {data,error}=await supabase.auth.signUp({email:email.trim(),password,options:{data:{display_name:name.trim()}}});
    if(error){setBusy(false);return Alert.alert("Não foi possível criar",messageFor(error));}
-   if(data.session){await finishInvite(data.session.user.id);router.replace("/")}else Alert.alert("Conta criada","Confira seu e-mail para confirmar a conta e depois entre.");
+   if(data.session){const inviteRun=await finishInvite(data.session.user.id);router.replace(inviteRun?("/run/"+inviteRun) as any:"/")}else Alert.alert("Conta criada","Confira seu e-mail para confirmar a conta e depois entre.");
   }else{
    const {error}=await supabase.auth.signInWithPassword({email:email.trim(),password});
    if(error){setBusy(false);return Alert.alert("Não foi possível entrar",messageFor(error));}
-   await finishInvite((await supabase.auth.getUser()).data.user?.id||"");router.replace("/");
+   const inviteRun=await finishInvite((await supabase.auth.getUser()).data.user?.id||"");router.replace(inviteRun?("/run/"+inviteRun) as any:"/");
   }
   setBusy(false);
  }
