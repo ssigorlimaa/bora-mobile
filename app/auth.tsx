@@ -1,12 +1,13 @@
 import {useState} from "react";
 import {View,Text,TextInput,Pressable,StyleSheet,Alert,KeyboardAvoidingView,Platform,ScrollView} from "react-native";
-import {router} from "expo-router";
+import {router,useLocalSearchParams} from "expo-router";
 import {C} from "../constants/theme";
 import {supabase} from "../lib/supabase";
 
 function messageFor(error:any){const m=String(error?.message||"");if(/invalid login credentials/i.test(m))return "E-mail ou senha incorretos.";if(/email not confirmed/i.test(m))return "Confirme seu e-mail antes de entrar.";if(/user already registered/i.test(m))return "Esse e-mail já está cadastrado.";if(/password/i.test(m)&&/6/i.test(m))return "A senha precisa ter pelo menos 6 caracteres.";return m||"Não foi possível concluir agora."}
 
 export default function Auth(){
+ const params=useLocalSearchParams<{invite?:string}>();
  const[email,setEmail]=useState(""); const[password,setPassword]=useState(""); const[name,setName]=useState(""); const[signup,setSignup]=useState(false); const[busy,setBusy]=useState(false);
  async function resetPassword(){
   if(!supabase)return Alert.alert("Configuração","O BORA não conseguiu conectar ao servidor.");
@@ -21,11 +22,11 @@ export default function Auth(){
   if(signup){
    const {data,error}=await supabase.auth.signUp({email:email.trim(),password,options:{data:{display_name:name.trim()}}});
    if(error){setBusy(false);return Alert.alert("Não foi possível criar",messageFor(error));}
-   if(data.session)router.replace("/");else Alert.alert("Conta criada","Confira seu e-mail para confirmar a conta e depois entre.");
+   if(data.session)router.replace(params.invite?("/run/"+params.invite) as any:"/");else Alert.alert("Conta criada","Confira seu e-mail para confirmar a conta e depois entre.");
   }else{
    const {error}=await supabase.auth.signInWithPassword({email:email.trim(),password});
    if(error){setBusy(false);return Alert.alert("Não foi possível entrar",messageFor(error));}
-   router.replace("/");
+   router.replace(params.invite?("/run/"+params.invite) as any:"/");
   }
   setBusy(false);
  }
