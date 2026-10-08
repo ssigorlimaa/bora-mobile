@@ -1,130 +1,59 @@
 import React from "react";
 import { ScrollView, Text, View, Pressable, StyleSheet, Image } from "react-native";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { C } from "../../constants/theme";
 import { Bottom, Avatar } from "../../components/BoraUI";
 
-const runs = [
-  ["Treino na Via Costeira","Hoje · 19:00","5 km · 5:30–6:00/km","Via Costeira, Natal","92%","8/15","https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=700&q=90"],
-  ["Sunset Run Ponta Negra","Hoje · 17:30","7 km · 5:00–5:40/km","Ponta Negra, Natal","85%","12/20","https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=90"],
-  ["Longão de Sábado","Sáb · 06:00","15 km · 5:20–5:50/km","Parque das Dunas","76%","18/25","https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=700&q=90"],
+const runs=[
+  {title:"Treino na Via Costeira",time:"Hoje · 19:00",distance:"5 km",pace:"5:30–6:00/km",place:"Via Costeira",match:"92%",people:"8/15",image:"https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=900&q=90"},
+  {title:"Sunset Run Ponta Negra",time:"Hoje · 17:30",distance:"7 km",pace:"5:00–5:40/km",place:"Ponta Negra",match:"85%",people:"12/20",image:"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=90"},
+  {title:"Longão de Sábado",time:"Sáb · 06:00",distance:"15 km",pace:"5:20–5:50/km",place:"Parque das Dunas",match:"76%",people:"18/25",image:"https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=90"}
 ];
 
-const actions = [
-  ["●","BORA PERTO","Corridas na sua região","/(tabs)/explore",C.cyan],
-  ["＋","CRIAR CORRIDA","Reúna a galera","/(tabs)/run",C.blue],
-  ["♙","CORREDORES","Conheça pessoas","/runners","#4B6475"],
-  ["♜","DESAFIOS","Supere seus limites","/(tabs)/challenges",C.gold],
+const quick=[
+  {label:"BORA PERTO",sub:"Agora",icon:"navigate-outline",color:C.cyan,path:"/(tabs)/explore"},
+  {label:"CRIAR",sub:"Nova corrida",icon:"add",color:C.blue,path:"/(tabs)/run"},
+  {label:"DESAFIOS",sub:"Sua evolução",icon:"trophy-outline",color:C.gold,path:"/(tabs)/challenges"}
 ];
 
-export default function Home() {
-  return (
-    <View style={s.root}>
-      <ScrollView style={s.bg} showsVerticalScrollIndicator={false} contentContainerStyle={s.wrap}>
-        <View style={s.head}>
-          <Avatar size={44}/>
-          <View style={s.headCopy}>
-            <Text style={s.hello}>Fala, <Text style={s.gold}>Igor!</Text> 👋</Text>
-            <Text style={s.sub}>Bora correr hoje?</Text>
-          </View>
-          <Pressable style={s.headBtn}><Text style={s.headIcon}>♧</Text><View style={s.dot}/></Pressable>
-          <Pressable style={s.headBtn}><Text style={s.headIcon}>♙</Text></Pressable>
-        </View>
+export default function Home(){
+ return <View style={s.root}>
+  <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.wrap}>
+   <View style={s.top}>
+    <View style={s.identity}><Avatar size={48} imageIndex={0}/><View><Text style={s.hello}>Fala, <Text style={s.gold}>Igor.</Text></Text><View style={s.location}><Ionicons name="location-outline" size={11} color={C.muted}/><Text style={s.locationText}>Natal, RN</Text></View></View></View>
+    <Pressable style={s.bell}><Ionicons name="notifications-outline" size={21} color={C.text}/><View style={s.dot}/></Pressable>
+   </View>
 
-        <Pressable style={s.search} onPress={() => router.push("/(tabs)/explore")}>
-          <Text style={s.searchText}>⌕  Buscar corridas, lugares ou pessoas...</Text>
-          <Text style={s.filter}>☷</Text>
-        </Pressable>
+   <View style={s.titleRow}><View><Text style={s.kicker}>SEU PRÓXIMO PASSO</Text><Text style={s.title}>Bora correr.</Text></View><Pressable onPress={()=>router.push("/(tabs)/explore")}><Text style={s.seeAll}>Explorar <Ionicons name="arrow-forward" size={12} color={C.gold}/></Text></Pressable></View>
 
-        <Pressable style={s.hero} onPress={() => router.push("/(tabs)/explore")}>
-          <Image source={{uri:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=90"}} style={StyleSheet.absoluteFillObject}/>
-          <View style={s.heroShade}/>
-          <View style={s.heroCopy}>
-            <Text style={s.eyebrow}>CORRIDAS PRÓXIMAS DE VOCÊ</Text>
-            <Text style={s.heroTitle}>BORA <Text style={s.gold}>AGORA</Text></Text>
-            <Text style={s.heroText}>Encontre gente com o mesmo ritmo e corra junto.</Text>
-          </View>
-          <View style={s.go}><Text style={s.goText}>→</Text></View>
-        </Pressable>
+   <Pressable style={s.hero} onPress={()=>router.push("/(tabs)/explore")}>
+    <Image source={{uri:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=90"}} style={StyleSheet.absoluteFillObject}/>
+    <View style={s.heroTint}/><View style={s.heroTop}><View style={s.live}><View style={s.liveDot}/><Text style={s.liveText}>BORA AGORA</Text></View><View style={s.distanceBadge}><Text style={s.distanceNum}>5</Text><Text style={s.distanceKm}>KM</Text></View></View>
+    <View style={s.heroBottom}><Text style={s.heroTitle}>Encontre sua corrida.</Text><Text style={s.heroCopy}>Gente no seu ritmo, perto de você.</Text><View style={s.heroCta}><Text style={s.heroCtaText}>ENCONTRAR CORRIDA</Text><Ionicons name="arrow-forward" size={16} color="#071018"/></View></View>
+   </Pressable>
 
-        <View style={s.grid}>
-          {actions.map((x) => (
-            <Pressable key={x[1]} style={[s.action,{backgroundColor:x[4]+"18",borderColor:x[4]+"72"}]} onPress={() => router.push(x[3] as any)}>
-              <Text style={[s.actionIcon,{color:x[4]}]}>{x[0]}</Text>
-              <Text style={s.actionTitle}>{x[1]}</Text>
-              <Text style={s.actionSub}>{x[2]}</Text>
-              <Text style={s.chev}>›</Text>
-            </Pressable>
-          ))}
-        </View>
+   <View style={s.quickHeader}><Text style={s.sectionTitle}>Acesso rápido</Text><Text style={s.sectionHint}>BORA do seu jeito</Text></View>
+   <View style={s.quickRow}>{quick.map(q=><Pressable key={q.label} style={s.quick} onPress={()=>router.push(q.path as any)}><View style={[s.quickIcon,{backgroundColor:q.color+"18",borderColor:q.color+"45"}]}><Ionicons name={q.icon as any} size={20} color={q.color}/></View><Text style={s.quickLabel}>{q.label}</Text><Text style={s.quickSub}>{q.sub}</Text></Pressable>)}</View>
 
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Corridas sugeridas pra você</Text>
-          <Pressable onPress={() => router.push("/(tabs)/explore")}><Text style={s.see}>Ver todas ›</Text></Pressable>
-        </View>
+   <View style={s.section}><View><Text style={s.sectionTitle}>Corridas para você</Text><Text style={s.sectionHint}>Baseadas no seu ritmo</Text></View><Pressable onPress={()=>router.push("/(tabs)/explore")}><Text style={s.seeAll}>Ver todas</Text></Pressable></View>
 
-        {runs.map((r,i) => (
-          <Pressable key={r[0]} style={s.run} onPress={() => router.push("/run/1")}>
-            <Image source={{uri:r[6]}} style={s.thumb}/>
-            <View style={s.runMiddle}>
-              <Text style={s.runTitle} numberOfLines={1}>{r[0]}</Text>
-              <Text style={s.meta}>▣  {r[1]}</Text>
-              <Text style={s.meta}>⌖  {r[2]}</Text>
-              <Text style={s.meta}>⌖  {r[3]}</Text>
-            </View>
-            <View style={s.right}>
-              <Text style={s.match}>{r[4]} match</Text>
-              <View style={s.people}><Avatar i={i+1} size={21}/><Avatar i={i+2} size={21}/><Text style={s.count}>{r[5]}</Text></View>
-              <Text style={s.part}>PARTICIPAR</Text>
-            </View>
-          </Pressable>
-        ))}
-      </ScrollView>
-      <Bottom active="home"/>
-    </View>
-  );
+   {runs.map((r,i)=><Pressable key={r.title} style={s.runCard} onPress={()=>router.push("/run/1")}>
+    <Image source={{uri:r.image}} style={s.runImage}/><View style={s.runShade}/>
+    <View style={s.runTop}><View style={s.match}><Text style={s.matchText}>{r.match} MATCH</Text></View><View style={s.avatarStack}><Avatar size={25} imageIndex={i+1}/><Avatar size={25} imageIndex={i+2}/><Text style={s.people}>{r.people}</Text></View></View>
+    <View style={s.runBottom}><Text style={s.runTitle}>{r.title}</Text><View style={s.runMeta}><Ionicons name="time-outline" size={13} color="#D9E1E6"/><Text>{r.time}</Text><Text style={s.sep}>•</Text><Text>{r.distance}</Text><Text style={s.sep}>•</Text><Text>{r.pace}</Text></View><View style={s.runFooter}><Text style={s.place}><Ionicons name="location-outline" size={12} color={C.gold}/> {r.place}</Text><View style={s.join}><Text>PARTICIPAR</Text><Ionicons name="arrow-forward" size={13} color="#071018"/></View></View></View>
+   </Pressable>)}
+  </ScrollView>
+  <Bottom active="home"/>
+ </View>
 }
 
-const s = StyleSheet.create({
-  root:{flex:1,backgroundColor:C.bg},
-  bg:{flex:1},
-  wrap:{paddingHorizontal:15,paddingTop:15,paddingBottom:112},
-  head:{flexDirection:"row",alignItems:"center"},
-  headCopy:{flex:1,marginLeft:9},
-  hello:{color:C.text,fontSize:18,fontWeight:"900",letterSpacing:-.25},
-  gold:{color:C.gold},
-  sub:{color:C.muted,fontSize:10,marginTop:2,fontWeight:"600"},
-  headBtn:{width:40,height:40,borderRadius:12,borderWidth:1,borderColor:"#203442",alignItems:"center",justifyContent:"center",backgroundColor:"#08131C",marginLeft:7,position:"relative"},
-  headIcon:{color:C.text,fontSize:18},
-  dot:{position:"absolute",width:6,height:6,borderRadius:3,backgroundColor:C.gold,right:6,top:6},
-  search:{height:46,borderRadius:23,borderWidth:1,borderColor:"#394A55",backgroundColor:"#09151E",marginTop:13,marginBottom:12,paddingHorizontal:14,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},
-  searchText:{color:"#A9B6C0",fontSize:9.5,fontWeight:"600"},
-  filter:{color:C.gold,fontSize:20},
-  hero:{height:220,borderRadius:20,overflow:"hidden",justifyContent:"flex-end",padding:17,position:"relative",borderWidth:1,borderColor:"#263A47"},
-  heroShade:{...StyleSheet.absoluteFillObject,backgroundColor:"#00000078"},
-  heroCopy:{zIndex:2},
-  eyebrow:{color:"#F8FAFC",fontSize:8,fontWeight:"900",letterSpacing:.55,marginBottom:3},
-  heroTitle:{color:C.white,fontSize:34,fontStyle:"italic",fontWeight:"900",letterSpacing:-1.4},
-  heroText:{color:"#F2F5F7",fontSize:10.5,width:"73%",lineHeight:15,marginTop:1,fontWeight:"500"},
-  go:{position:"absolute",right:15,bottom:15,width:47,height:47,borderRadius:24,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",zIndex:3},
-  goText:{color:"#071018",fontSize:28,lineHeight:30,fontWeight:"500"},
-  grid:{flexDirection:"row",flexWrap:"wrap",gap:8,marginTop:10},
-  action:{width:"48%",height:89,borderRadius:16,borderWidth:1,padding:11,position:"relative"},
-  actionIcon:{fontSize:21,fontWeight:"900"},
-  actionTitle:{color:C.text,fontSize:10.5,fontWeight:"900",marginTop:7,letterSpacing:.15},
-  actionSub:{color:"#B7C3CB",fontSize:8.2,marginTop:3},
-  chev:{position:"absolute",right:12,bottom:10,color:"#D8E0E5",fontSize:22},
-  section:{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:18,marginBottom:10},
-  sectionTitle:{color:C.text,fontSize:14,fontWeight:"900",letterSpacing:-.2},
-  see:{color:C.gold,fontSize:9.5,fontWeight:"900"},
-  run:{minHeight:105,borderRadius:16,borderWidth:1,borderColor:"#1D3442",backgroundColor:"#09151E",padding:8,flexDirection:"row",gap:9,marginBottom:8},
-  thumb:{width:73,height:89,borderRadius:11},
-  runMiddle:{flex:1,minWidth:0,paddingTop:1},
-  runTitle:{color:C.text,fontSize:10.2,fontWeight:"900",marginBottom:5},
-  meta:{color:C.muted,fontSize:7.9,lineHeight:14},
-  right:{width:76,alignItems:"flex-end"},
-  match:{color:"#042217",backgroundColor:C.green,borderRadius:8,paddingHorizontal:6,paddingVertical:4,fontSize:7,fontWeight:"900"},
-  people:{flexDirection:"row",alignItems:"center",marginTop:9,height:22},
-  count:{color:C.text,fontSize:7,marginLeft:3},
-  part:{backgroundColor:C.gold,color:"#071018",paddingHorizontal:7,paddingVertical:7,borderRadius:8,fontSize:7,fontWeight:"900",marginTop:7},
+const s=StyleSheet.create({
+ root:{flex:1,backgroundColor:C.bg},wrap:{paddingHorizontal:18,paddingTop:18,paddingBottom:116},
+ top:{flexDirection:"row",alignItems:"center",justifyContent:"space-between"},identity:{flexDirection:"row",alignItems:"center",gap:11},hello:{color:C.text,fontSize:20,fontWeight:"900",letterSpacing:-.5},gold:{color:C.gold},location:{flexDirection:"row",alignItems:"center",gap:3,marginTop:3},locationText:{color:C.muted,fontSize:9,fontWeight:"600"},bell:{width:43,height:43,borderRadius:15,borderWidth:1,borderColor:"#1D3442",backgroundColor:"#071119",alignItems:"center",justifyContent:"center"},dot:{position:"absolute",width:7,height:7,borderRadius:4,backgroundColor:C.gold,right:9,top:8,borderWidth:2,borderColor:"#071119"},
+ titleRow:{marginTop:27,marginBottom:12,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between"},kicker:{color:C.gold,fontSize:8,fontWeight:"900",letterSpacing:1.2,marginBottom:4},title:{color:C.text,fontSize:29,fontWeight:"900",letterSpacing:-1},seeAll:{color:C.gold,fontSize:10,fontWeight:"900",marginBottom:3},
+ hero:{height:300,borderRadius:27,overflow:"hidden",position:"relative",borderWidth:1,borderColor:"#30424C",justifyContent:"space-between"},heroTint:{...StyleSheet.absoluteFillObject,backgroundColor:"#07101866"},heroTop:{flexDirection:"row",justifyContent:"space-between",padding:15},live:{height:28,paddingHorizontal:11,borderRadius:15,backgroundColor:"#071018B8",borderWidth:1,borderColor:"#FFFFFF28",flexDirection:"row",alignItems:"center",gap:6},liveDot:{width:6,height:6,borderRadius:3,backgroundColor:C.gold},liveText:{color:C.white,fontSize:8,fontWeight:"900",letterSpacing:.7},distanceBadge:{width:52,height:52,borderRadius:18,backgroundColor:"#071018CC",borderWidth:1,borderColor:"#FFFFFF28",alignItems:"center",justifyContent:"center"},distanceNum:{color:C.gold,fontSize:20,fontWeight:"900",lineHeight:20},distanceKm:{color:C.white,fontSize:7,fontWeight:"900",letterSpacing:1},heroBottom:{padding:18,paddingTop:80},heroTitle:{color:C.white,fontSize:27,fontWeight:"900",letterSpacing:-.7},heroCopy:{color:"#E1E7EB",fontSize:11,marginTop:3},heroCta:{marginTop:13,height:39,paddingHorizontal:14,borderRadius:12,backgroundColor:C.gold,alignSelf:"flex-start",flexDirection:"row",alignItems:"center",gap:9},heroCtaText:{color:"#071018",fontSize:8,fontWeight:"900",letterSpacing:.3},
+ quickHeader:{marginTop:24,marginBottom:10,flexDirection:"row",justifyContent:"space-between",alignItems:"center"},sectionTitle:{color:C.text,fontSize:15,fontWeight:"900",letterSpacing:-.2},sectionHint:{color:C.muted,fontSize:8.5,marginTop:3},quickRow:{flexDirection:"row",gap:9},quick:{flex:1,minHeight:91,borderRadius:18,backgroundColor:"#071119",borderWidth:1,borderColor:"#172B38",padding:11},quickIcon:{width:35,height:35,borderRadius:11,borderWidth:1,alignItems:"center",justifyContent:"center"},quickLabel:{color:C.text,fontSize:8.5,fontWeight:"900",marginTop:9,letterSpacing:.2},quickSub:{color:C.muted,fontSize:7.5,marginTop:3},
+ section:{marginTop:25,marginBottom:11,flexDirection:"row",alignItems:"flex-end",justifyContent:"space-between"},
+ runCard:{height:204,borderRadius:22,overflow:"hidden",marginBottom:11,position:"relative",backgroundColor:"#071119",borderWidth:1,borderColor:"#1C3340"},runImage:{...StyleSheet.absoluteFillObject},runShade:{...StyleSheet.absoluteFillObject,backgroundColor:"#00000070"},runTop:{position:"absolute",left:12,right:12,top:12,flexDirection:"row",justifyContent:"space-between",alignItems:"center"},match:{backgroundColor:"#19C77AE8",paddingHorizontal:8,paddingVertical:5,borderRadius:8},matchText:{color:"#041B12",fontSize:7,fontWeight:"900",letterSpacing:.3},avatarStack:{flexDirection:"row",alignItems:"center"},people:{color:C.white,fontSize:8,fontWeight:"800",marginLeft:4},runBottom:{position:"absolute",left:14,right:14,bottom:13},runTitle:{color:C.white,fontSize:16,fontWeight:"900",letterSpacing:-.3},runMeta:{flexDirection:"row",alignItems:"center",gap:5,marginTop:6},runMetaText:{color:"#D9E1E6",fontSize:8},runMeta:{flexDirection:"row",alignItems:"center",gap:5,marginTop:6},sep:{color:"#8A9AA4",fontSize:9},runFooter:{marginTop:11,paddingTop:9,borderTopWidth:1,borderTopColor:"#FFFFFF24",flexDirection:"row",alignItems:"center",justifyContent:"space-between"},place:{color:"#D9E1E6",fontSize:8,fontWeight:"700"},join:{height:31,paddingHorizontal:11,borderRadius:10,backgroundColor:C.gold,flexDirection:"row",alignItems:"center",gap:7},joinText:{color:"#071018",fontSize:7,fontWeight:"900"}
 });
