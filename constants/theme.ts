@@ -1,1 +1,1 @@
-export const C={bg:"#050B12",surface:"#09131D",card:"#0D1B27",card2:"#112536",line:"#193447",gold:"#FFC52B",blue:"#2AAEFF",orange:"#FF7A18",red:"#FF4D4D",green:"#35D07F",text:"#F8FAFC",muted:"#8FA4B4"};
+export const C={bg:"#03080D",surface:"#07111A",card:"#0B1721",card2:"#10212C",line:"#1C3544",gold:"#FFD21A",gold2:"#FFB800",blue:"#237BFF",cyan:"#16D6C7",green:"#19C77A",red:"#FF4B4B",purple:"#6B4BFF",text:"#F8FAFC",muted:"#94A7B5",white:"#FFFFFF"};
