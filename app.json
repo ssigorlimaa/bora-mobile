@@ -1,1 +1,33 @@
-{"expo":{"name":"BORA","slug":"bora-mobile","version":"1.0.0","orientation":"portrait","userInterfaceStyle":"dark","newArchEnabled":true,"scheme":"bora","ios":{"supportsTablet":false,"bundleIdentifier":"com.bora.mobile","infoPlist":{"NSLocationWhenInUseUsageDescription":"O BORA usa sua localização aproximada para encontrar corridas perto de você."}},"android":{"package":"com.bora.mobile","permissions":["ACCESS_COARSE_LOCATION","ACCESS_FINE_LOCATION"]},"plugins":["expo-router","expo-location"],"experiments":{"typedRoutes":true}}}
+{
+  "expo": {
+    "name": "BORA",
+    "slug": "bora-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "scheme": "bora",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.bora.mobile",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "O BORA usa sua localização aproximada para encontrar corridas perto de você."
+      }
+    },
+    "android": {
+      "package": "com.bora.mobile",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-location",
+      "react-native-maps"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
