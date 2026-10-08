@@ -18,36 +18,25 @@ export default function Home(){
           <Pressable style={s.iconBtn}><Ionicons name="settings-outline" size={20} color={C.text}/></Pressable>
         </View>
       </View>
-
       <Pressable style={s.search} onPress={()=>router.push("/(tabs)/explore")}>
-        <Ionicons name="search-outline" size={21} color={C.text}/>
-        <Text style={s.searchText}>Buscar corridas, lugares ou pessoas...</Text>
-        <Ionicons name="options-outline" size={21} color={C.text}/>
+        <Ionicons name="search-outline" size={21} color={C.text}/><Text style={s.searchText}>Buscar corridas, lugares ou pessoas...</Text><Ionicons name="options-outline" size={21} color={C.text}/>
       </Pressable>
-
       <Pressable style={s.hero} onPress={()=>router.push("/(tabs)/explore")}>
         <Image source={{uri:"https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=90"}} style={StyleSheet.absoluteFillObject}/>
         <View style={s.heroShade}/>
-        <View style={s.heroCopy}>
-          <Text style={s.eyebrow}>CORRIDAS PRÓXIMAS DE VOCÊ</Text>
-          <Text style={s.heroTitle}>BORA <Text style={s.gold}>AGORA</Text></Text>
-          <Text style={s.heroText}>Encontre gente com o mesmo ritmo e corra junto.</Text>
-        </View>
+        <View style={s.heroCopy}><Text style={s.eyebrow}>CORRIDAS PRÓXIMAS DE VOCÊ</Text><Text style={s.heroTitle}>BORA <Text style={s.gold}>AGORA</Text></Text><Text style={s.heroText}>Encontre gente com o mesmo ritmo e corra junto.</Text></View>
         <View style={s.heroArrow}><Ionicons name="arrow-forward" size={25} color="#071018"/></View>
       </Pressable>
-
       <View style={s.quickGrid}>
         <Quick icon="location" title="BORA PERTO" sub="Corridas na sua região" tone="cyan" onPress={()=>router.push("/(tabs)/explore")}/>
         <Quick icon="add" title="CRIAR CORRIDA" sub="Reúna a galera" tone="blue" onPress={()=>router.push("/(tabs)/run")}/>
         <Quick icon="people-outline" title="CORREDORES" sub="Conheça pessoas" tone="dark" onPress={()=>router.push("/runners" as any)}/>
         <Quick icon="trophy-outline" title="DESAFIOS" sub="Supere seus limites" tone="gold" onPress={()=>router.push("/(tabs)/challenges")}/>
       </View>
-
       <View style={s.sectionHead}>
         <View><Text style={s.sectionTitle}>Corridas para você</Text><Text style={s.sectionSub}>Baseadas no seu ritmo</Text></View>
         <Pressable onPress={()=>router.push("/(tabs)/explore")}><Text style={s.see}>Ver todas <Ionicons name="chevron-forward" size={11} color={C.gold}/></Text></Pressable>
       </View>
-
       <View style={s.empty}>
         <View style={s.emptyIcon}><Ionicons name="walk-outline" size={35} color={C.muted}/></View>
         <Text style={s.emptyTitle}>Nenhuma corrida encontrada</Text>
@@ -58,7 +47,6 @@ export default function Home(){
     <Bottom active="home"/>
   </View>
 }
-
 function Quick({icon,title,sub,tone,onPress}:{icon:any;title:string;sub:string;tone:"cyan"|"blue"|"dark"|"gold";onPress:()=>void}){
   const colors={cyan:{bg:"#042A2A",line:"#0B9E9D",icon:C.cyan},blue:{bg:"#071B37",line:"#245FC2",icon:C.blue},dark:{bg:"#071119",line:"#243B49",icon:C.text},gold:{bg:"#241F09",line:"#947100",icon:C.gold}};
   const x=colors[tone];
@@ -67,7 +55,6 @@ function Quick({icon,title,sub,tone,onPress}:{icon:any;title:string;sub:string;t
     <Text style={s.quickTitle}>{title}</Text><Text style={s.quickSub}>{sub}</Text>
   </Pressable>
 }
-
 const s=StyleSheet.create({
  root:{flex:1,backgroundColor:C.bg},scroll:{flex:1},content:{paddingHorizontal:15,paddingTop:18,paddingBottom:150},
  header:{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginBottom:16},identity:{flexDirection:"row",alignItems:"center"},avatar:{width:54,height:54,borderRadius:27,borderWidth:2,borderColor:C.gold,backgroundColor:C.card,alignItems:"center",justifyContent:"center",marginRight:11},hello:{color:C.text,fontSize:20,fontWeight:"900",letterSpacing:-.5},gold:{color:C.gold},sub:{color:C.muted,fontSize:10,marginTop:2},actions:{flexDirection:"row",gap:8},iconBtn:{width:43,height:43,borderRadius:14,borderWidth:1,borderColor:"#284254",backgroundColor:C.surface,alignItems:"center",justifyContent:"center"},dot:{position:"absolute",right:8,top:7,width:7,height:7,borderRadius:4,backgroundColor:C.gold},
