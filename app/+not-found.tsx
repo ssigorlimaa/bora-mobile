@@ -1,0 +1,5 @@
+import {View,Text,Pressable,StyleSheet} from "react-native";
+import {router} from "expo-router";
+import {C} from "../constants/theme";
+export default function NotFound(){return <View style={s.root}><Text style={s.logo}>BORA</Text><Text style={s.title}>Essa tela não existe.</Text><Text style={s.sub}>Volte para a corrida e continue de onde parou.</Text><Pressable style={s.cta} onPress={()=>router.replace("/")}><Text style={s.ctaText}>VOLTAR AO INÍCIO</Text></Pressable></View>}
+const s=StyleSheet.create({root:{flex:1,backgroundColor:C.bg,alignItems:"center",justifyContent:"center",padding:28},logo:{color:C.gold,fontSize:48,fontWeight:"900",fontStyle:"italic"},title:{color:C.text,fontSize:20,fontWeight:"900",marginTop:20,textAlign:"center"},sub:{color:C.muted,fontSize:10,lineHeight:16,textAlign:"center",marginTop:7},cta:{marginTop:20,height:48,paddingHorizontal:22,borderRadius:24,backgroundColor:C.gold,alignItems:"center",justifyContent:"center"},ctaText:{color:"#071018",fontSize:9,fontWeight:"900"}});
