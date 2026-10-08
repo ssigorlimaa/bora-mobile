@@ -1,11 +1,14 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { ScrollView, Text, View, Pressable, StyleSheet, Image } from "react-native";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { C } from "../../constants/theme";
 import { Bottom } from "../../components/BoraUI";
+import { supabase } from "../../lib/supabase";
 
 export default function Home(){
+  const [runs,setRuns]=useState<any[]>([]);
+  useEffect(()=>{(async()=>{if(!supabase)return;const {data}=await supabase.from("runs").select("*").eq("visibility","public").eq("status","scheduled").gte("starts_at",new Date().toISOString()).order("starts_at",{ascending:true}).limit(3);setRuns(data||[])})()},[]);
   return <View style={s.root}>
     <ScrollView style={s.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={s.content}>
       <View style={s.header}>
@@ -37,7 +40,7 @@ export default function Home(){
         <View><Text style={s.sectionTitle}>Corridas para você</Text><Text style={s.sectionSub}>Baseadas no seu ritmo</Text></View>
         <Pressable onPress={()=>router.push("/(tabs)/explore")}><Text style={s.see}>Ver todas <Ionicons name="chevron-forward" size={11} color={C.gold}/></Text></Pressable>
       </View>
-      <View style={s.empty}>
+      {runs.length>0?<View style={s.runList}>{runs.map(r=><Pressable key={r.id} style={s.runCard} onPress={()=>router.push(("/run/"+r.id) as any)}><View style={{flex:1}}><Text style={s.runTitle}>{r.title}</Text><Text style={s.runMeta}>{Number(r.distance_km)} km · {new Date(r.starts_at).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}</Text><Text style={s.runMeta}>⌖ {r.meeting_label||"Local a definir"}</Text></View><Text style={s.runCta}>VER</Text></Pressable>)}</View>:<View style={s.empty}>
         <View style={s.emptyIcon}><Ionicons name="walk-outline" size={35} color={C.muted}/></View>
         <Text style={s.emptyTitle}>Nenhuma corrida encontrada</Text>
         <Text style={s.emptyText}>Que tal criar sua primeira corrida{"\n"}ou explorar a região?</Text>
@@ -62,5 +65,5 @@ const s=StyleSheet.create({
  hero:{height:225,borderRadius:25,overflow:"hidden",borderWidth:1,borderColor:"#29495C",position:"relative",justifyContent:"flex-end"},heroShade:{...StyleSheet.absoluteFillObject,backgroundColor:"#00000066"},heroCopy:{padding:18,paddingBottom:20},eyebrow:{color:C.white,fontSize:10,fontWeight:"800",letterSpacing:.7},heroTitle:{color:C.white,fontSize:36,fontStyle:"italic",fontWeight:"900",letterSpacing:-1.4,marginTop:3},heroText:{color:C.white,fontSize:11,lineHeight:16,width:"72%",marginTop:2},heroArrow:{position:"absolute",right:17,bottom:19,width:51,height:51,borderRadius:26,backgroundColor:C.gold,alignItems:"center",justifyContent:"center"},
  quickGrid:{flexDirection:"row",flexWrap:"wrap",gap:9,marginTop:12},quick:{width:"48.5%",height:112,borderRadius:19,borderWidth:1,padding:12},quickTop:{flexDirection:"row",justifyContent:"space-between",alignItems:"center"},quickIcon:{width:35,height:35,borderRadius:18,alignItems:"center",justifyContent:"center"},quickTitle:{color:C.text,fontSize:10,fontWeight:"900",marginTop:12},quickSub:{color:"#AAB7C1",fontSize:8.5,marginTop:4,lineHeight:12},
  sectionHead:{flexDirection:"row",justifyContent:"space-between",alignItems:"center",marginTop:23,marginBottom:10},sectionTitle:{color:C.text,fontSize:19,fontWeight:"900",letterSpacing:-.5},sectionSub:{color:C.muted,fontSize:10,marginTop:2},see:{color:C.gold,fontSize:10,fontWeight:"900"},
- empty:{height:300,borderRadius:22,borderWidth:1,borderColor:"#17394D",backgroundColor:"#06111A",alignItems:"center",justifyContent:"center",paddingHorizontal:25,marginBottom:10},emptyIcon:{width:72,height:72,borderRadius:36,borderWidth:1,borderColor:"#28475A",alignItems:"center",justifyContent:"center",marginBottom:14},emptyTitle:{color:C.text,fontSize:16,fontWeight:"900"},emptyText:{color:C.muted,fontSize:11,lineHeight:18,textAlign:"center",marginTop:7},emptyCta:{marginTop:17,height:43,paddingHorizontal:22,borderRadius:22,borderWidth:1.5,borderColor:C.gold,flexDirection:"row",alignItems:"center",gap:12},emptyCtaText:{color:C.gold,fontSize:11,fontWeight:"900"}
+ empty:{height:300,borderRadius:22,borderWidth:1,borderColor:"#17394D",backgroundColor:"#06111A",alignItems:"center",justifyContent:"center",paddingHorizontal:25,marginBottom:10},emptyIcon:{width:72,height:72,borderRadius:36,borderWidth:1,borderColor:"#28475A",alignItems:"center",justifyContent:"center",marginBottom:14},emptyTitle:{color:C.text,fontSize:16,fontWeight:"900"},emptyText:{color:C.muted,fontSize:11,lineHeight:18,textAlign:"center",marginTop:7},emptyCta:{marginTop:17,height:43,paddingHorizontal:22,borderRadius:22,borderWidth:1.5,borderColor:C.gold,flexDirection:"row",alignItems:"center",gap:12},emptyCtaText:{color:C.gold,fontSize:11,fontWeight:"900"},runList:{gap:8},runCard:{minHeight:78,borderRadius:15,borderWidth:1,borderColor:"#17394D",backgroundColor:"#06111A",padding:12,flexDirection:"row",alignItems:"center"},runTitle:{color:C.text,fontSize:11,fontWeight:"900"},runMeta:{color:C.muted,fontSize:8,lineHeight:14},runCta:{color:"#071018",backgroundColor:C.gold,paddingHorizontal:9,paddingVertical:7,borderRadius:8,fontSize:8,fontWeight:"900"}
 });
