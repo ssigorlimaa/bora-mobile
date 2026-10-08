@@ -5,6 +5,15 @@ import {C} from "../constants/theme";
 import {supabase} from "../lib/supabase";
 export default function Auth(){
  const[email,setEmail]=useState(""); const[password,setPassword]=useState(""); const[name,setName]=useState(""); const[signup,setSignup]=useState(false); const[busy,setBusy]=useState(false);
+ async function resetPassword(){
+  if(!supabase)return Alert.alert("Configuração","Supabase não configurado.");
+  if(!email.trim())return Alert.alert("E-mail","Digite seu e-mail para receber o link.");
+  setBusy(true);
+  const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:"bora://reset-password"});
+  setBusy(false);
+  if(error)return Alert.alert("Recuperação",error.message);
+  Alert.alert("E-mail enviado","Confira sua caixa de entrada para redefinir a senha.");
+ }
  async function submit(){
   if(!supabase)return Alert.alert("Configuração","Supabase não configurado.");
   if(!email||password.length<6||(signup&&!name.trim()))return Alert.alert("Confira","Preencha os campos. A senha precisa ter pelo menos 6 caracteres.");
@@ -26,7 +35,8 @@ export default function Auth(){
  <TextInput style={s.input} placeholder="E-mail" placeholderTextColor={C.muted} value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address"/>
  <TextInput style={s.input} placeholder="Senha" placeholderTextColor={C.muted} value={password} onChangeText={setPassword} secureTextEntry/>
  <Pressable style={s.cta} disabled={busy} onPress={submit}><Text style={s.ctaText}>{busy?"AGUARDE...":signup?"CRIAR CONTA":"ENTRAR"}</Text></Pressable>
+ {!signup&&<Pressable onPress={resetPassword} disabled={busy}><Text style={s.forgot}>Esqueci minha senha</Text></Pressable>}
  <Pressable onPress={()=>setSignup(!signup)}><Text style={s.switch}>{signup?"Já tenho uma conta":"Ainda não tenho conta"}</Text></Pressable>
  </View>
 }
-const s=StyleSheet.create({wrap:{flex:1,backgroundColor:C.bg,padding:22,justifyContent:"center"},logo:{color:C.gold,fontSize:48,fontWeight:"900",fontStyle:"italic"},tag:{color:C.text,fontSize:20,fontWeight:"900",marginVertical:22},input:{backgroundColor:C.card,borderColor:C.line,borderWidth:1,borderRadius:12,padding:13,color:C.text,marginBottom:9},cta:{backgroundColor:C.gold,padding:15,borderRadius:13,alignItems:"center",marginTop:6},ctaText:{color:"#071018",fontWeight:"900"},switch:{color:C.gold,textAlign:"center",marginTop:18,fontWeight:"800"}});
+const s=StyleSheet.create({wrap:{flex:1,backgroundColor:C.bg,padding:22,justifyContent:"center"},logo:{color:C.gold,fontSize:48,fontWeight:"900",fontStyle:"italic"},tag:{color:C.text,fontSize:20,fontWeight:"900",marginVertical:22},input:{backgroundColor:C.card,borderColor:C.line,borderWidth:1,borderRadius:12,padding:13,color:C.text,marginBottom:9},cta:{backgroundColor:C.gold,padding:15,borderRadius:13,alignItems:"center",marginTop:6},ctaText:{color:"#071018",fontWeight:"900"},switch:{color:C.gold,textAlign:"center",marginTop:18,fontWeight:"800"},forgot:{color:C.muted,textAlign:"center",marginTop:14,fontSize:11,fontWeight:"700"}});
