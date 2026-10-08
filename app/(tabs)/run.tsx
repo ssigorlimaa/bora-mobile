@@ -10,10 +10,8 @@ export default function Run(){
   const start=new Date();start.setHours(start.getHours()+(when==="now"?1:when==="today"?4:24));start.setMinutes(0,0,0);
   const [a,b]=pace.split("-").map(x=>{const [m,s]=x.split(":").map(Number);return m*60+s});
   setBusy(true);
-  const {data:run,error}=await supabase.from("runs").insert({creator_id:user.id,title:title.trim(),description:description.trim()||null,starts_at:start.toISOString(),distance_km:Number(dist),pace_min_sec:a,pace_max_sec:b,meeting_label:meeting.trim()||null,meeting_lat:coords?.lat??null,meeting_lng:coords?.lng??null,max_participants:Number(limit)||20,visibility:"public",status:"scheduled",share_token:randomToken()}).select().single();
-  if(error){setBusy(false);return Alert.alert("Não foi possível criar",error.message);}
-  const {error:pe}=await supabase.from("run_participants").insert({run_id:run.id,user_id:user.id,status:"joined"});
-  setBusy(false);if(pe)return Alert.alert("Corrida criada","Mas não foi possível registrar sua participação: "+pe.message);
+  const {data:run,error}=await supabase.rpc("create_run",{p_title:title.trim(),p_description:description.trim()||null,p_starts_at:start.toISOString(),p_distance_km:Number(dist),p_pace_min_sec:a,p_pace_max_sec:b,p_meeting_lat:coords?.lat??null,p_meeting_lng:coords?.lng??null,p_meeting_label:meeting.trim()||null,p_max_participants:Number(limit)||20,p_share_token:randomToken()});
+  setBusy(false);if(error||!run)return Alert.alert("Não foi possível criar",error?.message||"Erro inesperado.");
   router.replace("/run/"+run.id);
  }
  return <View style={s.root}><ScrollView style={s.bg} contentContainerStyle={s.wrap}>
