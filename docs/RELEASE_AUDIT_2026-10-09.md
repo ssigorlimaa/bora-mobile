@@ -14,7 +14,7 @@ Revisão do app Expo/React Native, rotas de autenticação e corridas, configura
 - Varredura do código do app: nenhum `service_role`, segredo Supabase de servidor ou API Key Google real hardcoded nos arquivos de aplicação.
 - Integridade no Supabase: 0 coordenadas inválidas, 0 faixas de pace inválidas, 0 participantes concluídos fora do ciclo permitido e 0 estatísticas negativas.
 - Supabase Security Advisor: um alerta restante, `auth_leaked_password_protection`, recurso que o painel informa ser exclusivo do plano Pro.
-- Supabase Performance Advisor: 15 índices não usados em nível INFO. Não foram removidos, pois o tráfego atual é insuficiente para concluir que sejam redundantes.
+- Supabase Performance Advisor: 14 índices não usados em nível INFO. Não foram removidos, pois o tráfego atual é insuficiente para concluir que sejam redundantes.
 
 Os exports e verificações estáticas não substituem o teste ponta a ponta no dispositivo. Cadastro, confirmação de e-mail, recuperação de senha, permissões de localização, mapas, convites e gamificação ainda precisam ser exercitados em Android com desempenho aceitável ou em aparelho físico.
 
