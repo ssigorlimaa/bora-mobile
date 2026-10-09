@@ -8,7 +8,7 @@ export default function Run(){
  async function locate(){try{const p=await Location.requestForegroundPermissionsAsync();if(p.status!=="granted")return Alert.alert("Localização","Permissão não concedida. Você ainda pode criar a corrida sem coordenadas.");const pos=await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Balanced});setCoords({lat:roundApprox(pos.coords.latitude),lng:roundApprox(pos.coords.longitude)});Alert.alert("Localização","Ponto de encontro aproximado capturado.");}catch{Alert.alert("Localização","Não foi possível obter sua localização agora.")}}
  async function create(){
   if(busy)return;
-  const user=await getUser();if(!user||!supabase)return Alert.alert("Sessão","Entre novamente para criar.");
+  if(!supabase)return Alert.alert("Configuração","O BORA não conseguiu conectar ao servidor.");
   if(!title.trim())return Alert.alert("Título","Dê um nome para a corrida.");
   const now=new Date();const start=new Date(now);
   if(when==="now"){start.setTime(now.getTime()+60*60*1000);}
@@ -17,6 +17,8 @@ export default function Run(){
   const [a,b]=pace.split("-").map(x=>{const [m,s]=x.split(":").map(Number);return m*60+s});
   setBusy(true);
   try{
+    const user=await getUser();
+    if(!user){Alert.alert("Sessão","Entre novamente para criar.");return;}
     const {data:run,error}=await supabase.rpc("create_run",{p_title:title.trim(),p_description:description.trim()||null,p_starts_at:start.toISOString(),p_distance_km:Number(dist),p_pace_min_sec:a,p_pace_max_sec:b,p_meeting_lat:coords?.lat??null,p_meeting_lng:coords?.lng??null,p_meeting_label:meeting.trim()||null,p_max_participants:Number(limit)||20,p_share_token:randomToken()});
     if(error||!run){Alert.alert("Não foi possível criar",error?.message||"Erro inesperado.");return;}
     router.replace("/run/"+run.id);
