@@ -8,7 +8,7 @@ export default function Run(){
  async function locate(){try{const p=await Location.requestForegroundPermissionsAsync();if(p.status!=="granted")return Alert.alert("Localização","Permissão não concedida. Você ainda pode criar a corrida sem coordenadas.");const pos=await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Balanced});setCoords({lat:roundApprox(pos.coords.latitude),lng:roundApprox(pos.coords.longitude)});Alert.alert("Localização","Ponto de encontro aproximado capturado.");}catch{Alert.alert("Localização","Não foi possível obter sua localização agora.")}}
  async function create(){
   if(busy)return;
-  const user=await getUser();if(!user||!supabase)return Alert.alert("Sessão","Entre novamente para criar.");
+  if(!supabase)return Alert.alert("Configuração","O BORA não conseguiu conectar ao servidor.");
   if(!title.trim())return Alert.alert("Título","Dê um nome para a corrida.");
   const now=new Date();const start=new Date(now);
   if(when==="now"){start.setTime(now.getTime()+60*60*1000);}
@@ -17,6 +17,8 @@ export default function Run(){
   const [a,b]=pace.split("-").map(x=>{const [m,s]=x.split(":").map(Number);return m*60+s});
   setBusy(true);
   try{
+    const user=await getUser();
+    if(!user){Alert.alert("Sessão","Entre novamente para criar.");return;}
     const {data:run,error}=await supabase.rpc("create_run",{p_title:title.trim(),p_description:description.trim()||null,p_starts_at:start.toISOString(),p_distance_km:Number(dist),p_pace_min_sec:a,p_pace_max_sec:b,p_meeting_lat:coords?.lat??null,p_meeting_lng:coords?.lng??null,p_meeting_label:meeting.trim()||null,p_max_participants:Number(limit)||20,p_share_token:randomToken()});
     if(error||!run){Alert.alert("Não foi possível criar",error?.message||"Erro inesperado.");return;}
     router.replace("/run/"+run.id);
@@ -36,4 +38,4 @@ export default function Run(){
  <Pressable style={[s.cta,busy&&{opacity:.65}]} disabled={busy} onPress={create}><Text style={s.ctaText}>{busy?"CRIANDO...":"CRIAR CORRIDA"}</Text></Pressable>
  </ScrollView><Bottom active="create"/></View>
 }
-const s=StyleSheet.create({root:{flex:1,backgroundColor:C.bg},bg:{flex:1},wrap:{padding:15,paddingBottom:190},title:{color:C.text,fontSize:17,fontWeight:"900",marginBottom:12},section:{color:C.text,fontSize:13,fontWeight:"900",marginTop:14,marginBottom:9},label:{color:C.text,fontSize:9,fontWeight:"800",marginTop:6,marginBottom:5},locationBtn:{height:42,borderRadius:11,borderWidth:1,borderColor:C.gold,alignItems:"center",justifyContent:"center",marginBottom:7},locationText:{color:C.gold,fontSize:9,fontWeight:"900"},privacy:{color:C.muted,fontSize:7,lineHeight:12,marginTop:5},input:{borderWidth:1,borderColor:C.line,backgroundColor:C.card,borderRadius:11,padding:12,color:C.text,fontSize:11},row:{flexDirection:"row",gap:6,flexWrap:"wrap"},cta:{height:50,borderRadius:15,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:22},ctaText:{color:"#071018",fontWeight:"900",fontSize:11}});
+const s=StyleSheet.create({root:{flex:1,backgroundColor:C.bg},bg:{flex:1},wrap:{padding:15,paddingBottom:28},title:{color:C.text,fontSize:17,fontWeight:"900",marginBottom:12},section:{color:C.text,fontSize:13,fontWeight:"900",marginTop:14,marginBottom:9},label:{color:C.text,fontSize:9,fontWeight:"800",marginTop:6,marginBottom:5},locationBtn:{height:42,borderRadius:11,borderWidth:1,borderColor:C.gold,alignItems:"center",justifyContent:"center",marginBottom:7},locationText:{color:C.gold,fontSize:9,fontWeight:"900"},privacy:{color:C.muted,fontSize:7,lineHeight:12,marginTop:5},input:{borderWidth:1,borderColor:C.line,backgroundColor:C.card,borderRadius:11,padding:12,color:C.text,fontSize:11},row:{flexDirection:"row",gap:6,flexWrap:"wrap"},cta:{height:50,borderRadius:15,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:22},ctaText:{color:"#071018",fontWeight:"900",fontSize:11}});
