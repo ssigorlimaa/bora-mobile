@@ -27,6 +27,7 @@ Os exports e verificações estáticas não substituem o teste ponta a ponta no 
 - Criação de corrida impede taps concorrentes durante a obtenção da sessão; ações de ciclo de vida impedem chamadas repetidas e liberam o estado ocupado em falhas de rede.
 - Explore conta apenas participantes `joined`/`completed`; imagens da Home usam payload menor para reduzir tráfego móvel.
 - Trigger de participantes agora impede troca de `run_id`/`user_id` e impede desfazer um status `completed`, preservando histórico e estatísticas.
+- RPC `start_run` agora só permite iniciar a corrida a partir do horário agendado, evitando iniciar corridas futuras e concluir antes do horário previsto.
 - Tokens de compartilhamento usam UUID criptograficamente seguro via `expo-crypto`.
 - Horários de criação de corrida respeitam “Daqui a 1h”, “Hoje” e “Amanhã”; a opção “Hoje” avisa quando não há mais janela futura no mesmo dia.
 - A criação de corrida sempre limpa o estado de carregamento, inclusive em falha de rede.
@@ -37,7 +38,7 @@ Os exports e verificações estáticas não substituem o teste ponta a ponta no 
 
 ## Pendências antes de lançamento público
 
-1. **Histórico de migrations incompleto.** O banco remoto lista 22 migrations aplicadas; o repositório versiona três migrations recentes, mas ainda não contém os 19 SQLs históricos anteriores. O banco não é reproduzível do zero a partir do Git. Recuperar os SQLs históricos ou produzir um baseline completo, validá-lo em um projeto descartável e documentar como adotá-lo. Não executar `db reset` na produção.
+1. **Histórico de migrations incompleto.** O banco remoto lista 23 migrations aplicadas; o repositório versiona quatro migrations recentes, mas ainda não contém os 19 SQLs históricos anteriores. O banco não é reproduzível do zero a partir do Git. Recuperar os SQLs históricos ou produzir um baseline completo, validá-lo em um projeto descartável e documentar como adotá-lo. Não executar `db reset` na produção.
 2. **Dependências:** `npm audit` reportou 39 achados transitivos (23 high, 16 moderate, 0 critical). As sugestões automáticas incluem saltos major na stack Expo/React Native. Não executar `npm audit fix --force`; planejar uma atualização dedicada com testes de regressão.
 3. **Senha comprometida:** proteção permanece desativada porque o painel informa que exige plano Pro. Manter comprimento mínimo de 8 caracteres e os requisitos de senha configurados no Auth.
 4. **Lockfile:** o repositório ainda não versiona `package-lock.json`; a instalação do CI não é totalmente determinística. Adicionar o lockfile gerado e mudar o CI para `npm ci` em uma atualização controlada.
@@ -53,6 +54,7 @@ Os exports e verificações estáticas não substituem o teste ponta a ponta no 
 - **Desafios:** inscrição e datas de início/fim estão implementadas; progresso individual por desafio e atualização automática da distância ainda precisam ser definidos/implementados.
 - **Convites:** o compartilhamento usa deep link `bora://invite/<token>`; validar em dispositivos reais o comportamento entre WhatsApp, navegador e app instalado e planejar um link HTTPS universal para melhor compatibilidade.
 - **Mapas:** configuração Android foi validada no Google Cloud, mas ainda falta teste de runtime com o APK no emulador rápido ou aparelho físico. iOS precisa de uma chave própria caso seja alvo do lançamento.
+- **Gamificação:** conclusão ainda é autodeclarada; não há GPS/cronômetro de corrida validado no servidor, então o app não deve apresentar XP como prova de atividade verificada.
 - **Testes de fluxo:** não há suíte automatizada de integração para auth, criação/entrada/saída de corridas, capacidade concorrente, XP/medalhas ou RLS. A CI cobre tipos e exports, não substitui esses testes.
 
 ## Regras de segurança
