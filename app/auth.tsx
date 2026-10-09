@@ -7,7 +7,8 @@ import {supabase} from "../lib/supabase";
 
 const INVITE_KEY="bora.pending_invite";
 
-function messageFor(error:any){const m=String(error?.message||"");if(/invalid login credentials/i.test(m))return "E-mail ou senha incorretos.";if(/email not confirmed/i.test(m))return "Confirme seu e-mail antes de entrar.";if(/user already registered/i.test(m))return "Esse e-mail já está cadastrado.";if(/password/i.test(m)&&/6/i.test(m))return "A senha precisa ter pelo menos 6 caracteres.";return m||"Não foi possível concluir agora."}
+function messageFor(error:any){const m=String(error?.message||"");if(/invalid login credentials/i.test(m))return "E-mail ou senha incorretos.";if(/email not confirmed/i.test(m))return "Confirme seu e-mail antes de entrar.";if(/user already registered/i.test(m))return "Esse e-mail já está cadastrado.";if(/password/i.test(m)&&/(weak|short|at least|characters)/i.test(m))return "Use uma senha de pelo menos 8 caracteres e siga os requisitos de segurança.";
+ if(/password/i.test(m))return "A senha não atende aos requisitos de segurança configurados." ;return m||"Não foi possível concluir agora."}
 
 export default function Auth(){
  const params=useLocalSearchParams<{invite?:string}>();
@@ -24,7 +25,7 @@ export default function Auth(){
  async function finishInvite(userId:string,token:string|null){if(!supabase||!token||!userId)return null;const{data}=await supabase.from("runs").select("id").eq("share_token",token).maybeSingle();if(data?.id)await AsyncStorage.removeItem(INVITE_KEY);return data?.id||null}
  async function submit(){
   if(!supabase)return Alert.alert("Configuração","O BORA não conseguiu conectar ao servidor.");
-  if(!email.trim()||password.length<6||(signup&&!name.trim()))return Alert.alert("Confira","Preencha os campos. A senha precisa ter pelo menos 6 caracteres.");
+  if(!email.trim()||password.length<8||(signup&&!name.trim()))return Alert.alert("Confira","Preencha os campos. A senha precisa ter pelo menos 8 caracteres.");
   setBusy(true);
   if(signup){
    const {data,error}=await supabase.auth.signUp({email:email.trim(),password,options:{data:{display_name:name.trim()}}});
