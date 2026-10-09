@@ -32,7 +32,7 @@ Os exports e verificações estáticas não substituem o teste ponta a ponta no 
 
 ## Pendências antes de lançamento público
 
-1. **Histórico de migrations incompleto.** O banco remoto lista 22 migrations aplicadas; o repositório ainda contém somente a migration de integridade mais recente e a migration social desta auditoria. O banco não é reproduzível do zero a partir do Git. Recuperar os SQLs históricos ou produzir um baseline completo, validá-lo em um projeto descartável e documentar como adotá-lo. Não executar `db reset` na produção.
+1. **Histórico de migrations incompleto.** O banco remoto lista 21 migrations aplicadas; o repositório ainda contém somente a migration de integridade mais recente e a migration social desta auditoria. O banco não é reproduzível do zero a partir do Git. Recuperar os SQLs históricos ou produzir um baseline completo, validá-lo em um projeto descartável e documentar como adotá-lo. Não executar `db reset` na produção.
 2. **Dependências:** `npm audit` reportou 39 achados transitivos (23 high, 16 moderate, 0 critical). As sugestões automáticas incluem saltos major na stack Expo/React Native. Não executar `npm audit fix --force`; planejar uma atualização dedicada com testes de regressão.
 3. **Senha comprometida:** proteção permanece desativada porque o painel informa que exige plano Pro. Manter comprimento mínimo de 8 caracteres e os requisitos de senha configurados no Auth.
 4. **Lockfile:** o repositório ainda não versiona `package-lock.json`; a instalação do CI não é totalmente determinística. Adicionar o lockfile gerado e mudar o CI para `npm ci` em uma atualização controlada.
