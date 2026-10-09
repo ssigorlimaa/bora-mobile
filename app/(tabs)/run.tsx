@@ -7,15 +7,23 @@ export default function Run(){
  const[title,setTitle]=useState("");const[coords,setCoords]=useState<{lat:number;lng:number}|null>(null);const[description,setDescription]=useState("");const[dist,setDist]=useState("5");const[pace,setPace]=useState("5:30-6:00");const[when,setWhen]=useState("tomorrow");const[meeting,setMeeting]=useState("");const[limit,setLimit]=useState("20");const[busy,setBusy]=useState(false);
  async function locate(){try{const p=await Location.requestForegroundPermissionsAsync();if(p.status!=="granted")return Alert.alert("Localização","Permissão não concedida. Você ainda pode criar a corrida sem coordenadas.");const pos=await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Balanced});setCoords({lat:roundApprox(pos.coords.latitude),lng:roundApprox(pos.coords.longitude)});Alert.alert("Localização","Ponto de encontro aproximado capturado.");}catch{Alert.alert("Localização","Não foi possível obter sua localização agora.")}}
  async function create(){
+  if(busy)return;
   const user=await getUser();if(!user||!supabase)return Alert.alert("Sessão","Entre novamente para criar.");
   if(!title.trim())return Alert.alert("Título","Dê um nome para a corrida.");
-  const start=new Date();start.setHours(start.getHours()+(when==="now"?1:when==="today"?4:24));start.setMinutes(0,0,0);
+  const now=new Date();const start=new Date(now);
+  if(when==="now"){start.setTime(now.getTime()+60*60*1000);}
+  else if(when==="today"){start.setHours(now.getHours()+2,0,0,0);if(start.toDateString()!==now.toDateString())return Alert.alert("Horário indisponível","Hoje já não há um horário futuro disponível. Escolha 'Daqui a 1h' ou 'Amanhã'.");}
+  else{start.setDate(start.getDate()+1);start.setMinutes(0,0,0);}
   const [a,b]=pace.split("-").map(x=>{const [m,s]=x.split(":").map(Number);return m*60+s});
   setBusy(true);
-  const {data:run,error}=await supabase.rpc("create_run",{p_title:title.trim(),p_description:description.trim()||null,p_starts_at:start.toISOString(),p_distance_km:Number(dist),p_pace_min_sec:a,p_pace_max_sec:b,p_meeting_lat:coords?.lat??null,p_meeting_lng:coords?.lng??null,p_meeting_label:meeting.trim()||null,p_max_participants:Number(limit)||20,p_share_token:randomToken()});
-  setBusy(false);if(error||!run)return Alert.alert("Não foi possível criar",error?.message||"Erro inesperado.");
-  router.replace("/run/"+run.id);
- }
+  try{
+    const {data:run,error}=await supabase.rpc("create_run",{p_title:title.trim(),p_description:description.trim()||null,p_starts_at:start.toISOString(),p_distance_km:Number(dist),p_pace_min_sec:a,p_pace_max_sec:b,p_meeting_lat:coords?.lat??null,p_meeting_lng:coords?.lng??null,p_meeting_label:meeting.trim()||null,p_max_participants:Number(limit)||20,p_share_token:randomToken()});
+    if(error||!run){Alert.alert("Não foi possível criar",error?.message||"Erro inesperado.");return;}
+    router.replace("/run/"+run.id);
+  }catch{
+    Alert.alert("Falha de conexão","Não foi possível criar a corrida. Confira sua internet e tente novamente.");
+  }finally{setBusy(false);}
+}
  return <View style={s.root}><ScrollView style={s.bg} contentContainerStyle={s.wrap} keyboardShouldPersistTaps="handled">
  <Text style={s.title}>‹  Criar corrida</Text><Text style={s.section}>Informações básicas</Text>
  <Text style={s.label}>Título da corrida</Text><TextInput value={title} onChangeText={setTitle} placeholder="Ex: Treino leve na orla" placeholderTextColor={C.muted} style={s.input}/>

@@ -5,14 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { C } from "../constants/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const avatars=[
- "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=80",
- "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80",
- "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80",
- "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=80",
- "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=160&q=80"
-];
-
+const avatarTones=["#14364B","#20372F","#352A50","#3A3022"];
 export const Btn=({children,onPress,outline=false}:{children:any;onPress?:()=>void;outline?:boolean})=><Pressable onPress={onPress} style={[u.btn,outline&&u.outline]}><Text style={[u.btnText,outline&&{color:C.text}]}>{children}</Text></Pressable>;
 export const Chip=({children,active=false}:{children:any;active?:boolean})=><View style={[u.chip,active&&u.chipOn]}><Text style={[u.chipText,active&&{color:"#071018"}]}>{children}</Text></View>;
 export const Header=({title,back=true}:{title:string;back?:boolean})=><View style={u.header}>{back?<Pressable onPress={()=>router.back()} hitSlop={8}><Ionicons name="chevron-back" size={25} color={C.gold}/></Pressable>:<View style={{width:25}}/>}<Text style={u.headerTitle}>{title}</Text><View style={{width:25}}/></View>;
@@ -23,10 +16,10 @@ export const Bottom=({active="home"}:{active?:string})=>{
  const items=[["home","Início","home"],["explore","Explorar","search"],["create","Criar","add"],["challenge","Desafios","trophy"],["profile","Perfil","person"]];
  return <View style={[u.bottom,{bottom:Math.max(10,insets.bottom+6)}]}>{items.map(x=>x[0]==="create"
  ? <Pressable key={x[0]} style={u.createNav} onPress={()=>router.push("/(tabs)/run")}><View style={u.createCircle}><Ionicons name="add" size={29} color="#071018"/></View><Text style={u.navText}>Criar</Text></Pressable>
- : <Pressable key={x[0]} style={u.nav} onPress={()=>router.push((x[0]==="home"?"/":x[0]==="explore"?"/(tabs)/explore":x[0]==="challenge"?"/(tabs)/challenges":"/(tabs)/profile") as any)}><Ionicons name={x[2] as any} size={21} color={active===x[0]?C.gold:"#9BA8B1"}/><Text style={[u.navText,active===x[0]&&{color:C.gold}]}>{x[1]}</Text></Pressable>)}</View>;
+ : <Pressable key={x[0]} style={u.nav} onPress={()=>router.replace((x[0]==="home"?"/":x[0]==="explore"?"/(tabs)/explore":x[0]==="challenge"?"/(tabs)/challenges":"/(tabs)/profile") as any)}><Ionicons name={x[2] as any} size={21} color={active===x[0]?C.gold:"#9BA8B1"}/><Text style={[u.navText,active===x[0]&&{color:C.gold}]}>{x[1]}</Text></Pressable>)}</View>;
 };
 
-export const Avatar=({size=34,imageIndex=0,imageUri}:{size?:number;imageIndex?:number;imageUri?:string|null})=><Image source={{uri:imageUri||avatars[imageIndex%avatars.length]}} style={[u.avatar,{width:size,height:size,borderRadius:size/2}]}/>;
+export const Avatar=({size=34,imageIndex=0,imageUri}:{size?:number;imageIndex?:number;imageUri?:string|null})=>imageUri?<Image source={{uri:imageUri}} style={[u.avatar,{width:size,height:size,borderRadius:size/2}]}/>:<View style={[u.avatarFallback,{width:size,height:size,borderRadius:size/2,backgroundColor:avatarTones[Math.abs(imageIndex)%avatarTones.length]}]}><Ionicons name="person" size={size*0.52} color="#DCE7ED"/></View>;
 
 const u=StyleSheet.create({
  header:{height:50,flexDirection:"row",alignItems:"center",justifyContent:"space-between"},headerTitle:{color:C.text,fontSize:16,fontWeight:"900"},
@@ -35,5 +28,5 @@ const u=StyleSheet.create({
  bottom:{position:"absolute",left:15,right:15,height:80,borderRadius:25,borderWidth:1,borderColor:"#3A5262",backgroundColor:"#030A10F8",flexDirection:"row",alignItems:"center",justifyContent:"space-around",paddingHorizontal:3,shadowColor:"#000",shadowOpacity:.5,shadowRadius:18,elevation:18},
  nav:{width:59,height:58,alignItems:"center",justifyContent:"center"},navText:{color:"#96A3AC",fontSize:8,fontWeight:"800",marginTop:4},
  createNav:{width:64,height:70,alignItems:"center",justifyContent:"flex-start"},createCircle:{width:56,height:56,borderRadius:28,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:-24,borderWidth:3,borderColor:"#071018",shadowColor:C.gold,shadowOpacity:.45,shadowRadius:15,elevation:12},
- avatar:{backgroundColor:C.card,borderWidth:2,borderColor:C.gold}
+ avatar:{backgroundColor:C.card,borderWidth:2,borderColor:C.gold},avatarFallback:{alignItems:"center",justifyContent:"center",borderWidth:1,borderColor:"#314552"}
 });
