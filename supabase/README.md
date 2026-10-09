@@ -4,7 +4,7 @@ Projeto de produção: `vzrmqanstwzmtqwyfqmb` (região `sa-east-1`).
 
 ## Atenção: histórico incompleto
 
-Em 2026-10-09, o projeto remoto lista 22 migrations aplicadas, mas o repositório contém somente a migration `20261008194103_bora_integrity_guards_and_private_coordinates.sql` e a migration `20261009002000_harden_social_write_policies.sql`. Os SQLs das 20 migrations históricas anteriores ainda precisam ser recuperados ou substituídos por um baseline completo e validado.
+Em 2026-10-09, o projeto remoto lista 22 migrations aplicadas, mas o repositório contém somente a migration `20261008194103_bora_integrity_guards_and_private_coordinates.sql` e a migration `20261009004522_harden_social_write_policies.sql`. Os SQLs das 20 migrations históricas anteriores ainda precisam ser recuperados ou substituídos por um baseline completo e validado.
 
 Por isso, a pasta `migrations` **ainda não recria um banco vazio de forma confiável**. Não execute `supabase db reset` na produção. Antes de provisionar outro ambiente, recupere os SQLs originais ou gere um baseline, teste-o em um projeto Supabase descartável e documente como adotá-lo sem reaplicar DDL na produção.
 
