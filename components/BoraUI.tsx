@@ -6,7 +6,7 @@ import { C } from "../constants/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const avatarTones=["#14364B","#20372F","#352A50","#3A3022"];
-export const Btn=({children,onPress,outline=false}:{children:any;onPress?:()=>void;outline?:boolean})=><Pressable onPress={onPress} style={[u.btn,outline&&u.outline]}><Text style={[u.btnText,outline&&{color:C.text}]}>{children}</Text></Pressable>;
+export const Btn=({children,onPress,outline=false,disabled=false}:{children:any;onPress?:()=>void;outline?:boolean;disabled?:boolean})=><Pressable onPress={onPress} disabled={disabled} style={[u.btn,outline&&u.outline,disabled&&{opacity:.55}]}><Text style={[u.btnText,outline&&{color:C.text}]}>{children}</Text></Pressable>;
 export const Chip=({children,active=false}:{children:any;active?:boolean})=><View style={[u.chip,active&&u.chipOn]}><Text style={[u.chipText,active&&{color:"#071018"}]}>{children}</Text></View>;
 export const Header=({title,back=true}:{title:string;back?:boolean})=><View style={u.header}>{back?<Pressable onPress={()=>router.back()} hitSlop={8}><Ionicons name="chevron-back" size={25} color={C.gold}/></Pressable>:<View style={{width:25}}/>}<Text style={u.headerTitle}>{title}</Text><View style={{width:25}}/></View>;
 export const RunImage=({uri="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=85",style}:any)=><Image source={{uri}} style={[u.runImg,style]}/>;
