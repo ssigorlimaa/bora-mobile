@@ -28,5 +28,5 @@ const u=StyleSheet.create({
  bottom:{position:"absolute",left:15,right:15,height:80,borderRadius:25,borderWidth:1,borderColor:"#3A5262",backgroundColor:"#030A10F8",flexDirection:"row",alignItems:"center",justifyContent:"space-around",paddingHorizontal:3,shadowColor:"#000",shadowOpacity:.5,shadowRadius:18,elevation:18},
  nav:{width:59,height:58,alignItems:"center",justifyContent:"center"},navText:{color:"#96A3AC",fontSize:8,fontWeight:"800",marginTop:4},
  createNav:{width:64,height:70,alignItems:"center",justifyContent:"flex-start"},createCircle:{width:56,height:56,borderRadius:28,backgroundColor:C.gold,alignItems:"center",justifyContent:"center",marginTop:-24,borderWidth:3,borderColor:"#071018",shadowColor:C.gold,shadowOpacity:.45,shadowRadius:15,elevation:12},
- avatar:{backgroundColor:C.card,borderWidth:2,borderColor:C.gold}
+ avatar:{backgroundColor:C.card,borderWidth:2,borderColor:C.gold},avatarFallback:{alignItems:"center",justifyContent:"center",borderWidth:1,borderColor:"#314552"}
 });
