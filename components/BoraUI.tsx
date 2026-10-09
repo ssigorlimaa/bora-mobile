@@ -23,7 +23,7 @@ export const Bottom=({active="home"}:{active?:string})=>{
  const items=[["home","Início","home"],["explore","Explorar","search"],["create","Criar","add"],["challenge","Desafios","trophy"],["profile","Perfil","person"]];
  return <View style={[u.bottom,{bottom:Math.max(10,insets.bottom+6)}]}>{items.map(x=>x[0]==="create"
  ? <Pressable key={x[0]} style={u.createNav} onPress={()=>router.push("/(tabs)/run")}><View style={u.createCircle}><Ionicons name="add" size={29} color="#071018"/></View><Text style={u.navText}>Criar</Text></Pressable>
- : <Pressable key={x[0]} style={u.nav} onPress={()=>router.push((x[0]==="home"?"/":x[0]==="explore"?"/(tabs)/explore":x[0]==="challenge"?"/(tabs)/challenges":"/(tabs)/profile") as any)}><Ionicons name={x[2] as any} size={21} color={active===x[0]?C.gold:"#9BA8B1"}/><Text style={[u.navText,active===x[0]&&{color:C.gold}]}>{x[1]}</Text></Pressable>)}</View>;
+ : <Pressable key={x[0]} style={u.nav} onPress={()=>router.replace((x[0]==="home"?"/":x[0]==="explore"?"/(tabs)/explore":x[0]==="challenge"?"/(tabs)/challenges":"/(tabs)/profile") as any)}><Ionicons name={x[2] as any} size={21} color={active===x[0]?C.gold:"#9BA8B1"}/><Text style={[u.navText,active===x[0]&&{color:C.gold}]}>{x[1]}</Text></Pressable>)}</View>;
 };
 
 export const Avatar=({size=34,imageIndex=0,imageUri}:{size?:number;imageIndex?:number;imageUri?:string|null})=><Image source={{uri:imageUri||avatars[imageIndex%avatars.length]}} style={[u.avatar,{width:size,height:size,borderRadius:size/2}]}/>;
