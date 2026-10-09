@@ -45,6 +45,16 @@ Os exports e verificações estáticas não substituem o teste ponta a ponta no 
 6. **Cobertura automatizada:** ainda não existe suíte de testes unitários/de integração. O CI verifica tipos e empacotamento, mas não simula auth nem transições de corrida.
 7. **Teste de runtime:** o emulador Windows está muito lento. A instalação abriu a Home, mas os fluxos completos ainda não foram aprovados; continuar os testes em aparelho físico ou após corrigir a aceleração do emulador.
 
+## Funcionalidades que ainda não estão completas (não tratar como bugs resolvidos)
+
+- **Notificações:** a tela atual é apenas um estado vazio; não há pipeline de notificações push/in-app implementado.
+- **Conexões sociais:** é possível enviar pedido de conexão, mas falta uma tela para listar e aceitar/recusar pedidos recebidos e visualizar o estado da conexão.
+- **Perfil:** leitura do perfil e estatísticas estão implementadas; edição de dados do perfil ainda não está disponível na interface.
+- **Desafios:** inscrição e datas de início/fim estão implementadas; progresso individual por desafio e atualização automática da distância ainda precisam ser definidos/implementados.
+- **Convites:** o compartilhamento usa deep link `bora://invite/<token>`; validar em dispositivos reais o comportamento entre WhatsApp, navegador e app instalado e planejar um link HTTPS universal para melhor compatibilidade.
+- **Mapas:** configuração Android foi validada no Google Cloud, mas ainda falta teste de runtime com o APK no emulador rápido ou aparelho físico. iOS precisa de uma chave própria caso seja alvo do lançamento.
+- **Testes de fluxo:** não há suíte automatizada de integração para auth, criação/entrada/saída de corridas, capacidade concorrente, XP/medalhas ou RLS. A CI cobre tipos e exports, não substitui esses testes.
+
 ## Regras de segurança
 
 - A publishable key do Supabase é pública para o cliente; RLS é a barreira real do banco.
